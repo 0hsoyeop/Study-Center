@@ -70,7 +70,21 @@
 - 취업 히스토리 테이블 (tblJobHistroy)에 데이터 추가하는 프로시저
 ```sql
 -- procInsertJobHistory
-exec procInsertJobHistory(<교육생seq>, '<직무>', ‘<기업명>', '<기업규모>', '<지원후기>', '<합격불합격>', '<지원날짜>');
+create or replace procedure procInsertJobHistory(
+	pstudentSeq tblStudent.studentSeq%type,
+	pjob tblJobHistory.job%type,
+	pcompanyName tblJobHistory.companyName%type,
+	pcompanySize tblJobHistory.companySize%type,
+	preview tblJobHistory.review%type,
+	ppass tblJobHistory.pass%type,
+	papplyDate tblJobHistory.applyDate%type
+)
+is
+begin
+	insert into tblJobHistory values ((select max(jobHistorySeq)+1 from tblJobHistory), pstudentSeq, pjob, pcompanyName, pcompanySize, preview, ppass, papplyDate);
+	dbms_output.put_line('취업 히스토리를 추가하였습니다.');
+end procInsertJobHistory;
+ 
 ```
 
 #### 취업 히스토리 뷰 생성
@@ -131,4 +145,34 @@ from tblStudent stdn
 ```
 #### 취업히스토리 조회
 ![취업결과조회](https://github.com/0hsoyeop/Neulbom/assets/131536077/09920069-9754-4195-8dab-4bed0f5b9287)
+
+### 기업별 리뷰 통계 조회하는 프로시저
+```sql
+create or replace procedure procCompanyReview
+is
+	pcompany tblJobHistory.companyName%type;
+	preview tblJobHistory.review%type;
+	pcount number;
+	cursor vcursor
+	is
+	select company, review, count(*) as cnt
+    	from vwJobHistory
+        	group by company, review
+            	order by company;
+begin
+	dbms_output.put_line(rpad('기업명', 15) || rpad('지원자리뷰', 15) || rpad('리뷰수', 15));
+	dbms_output.put_line('----------------------------------------');
+	open vcursor;
+    	loop
+        	fetch vcursor into pcompany, preview, pcount;
+        	exit when vcursor%notfound;
+        	
+            dbms_output.put_line(rpad(pcompany,15) || rpad(preview, 15) || rpad(pcount || '명',15));
+    	end loop;
+	close vcursor;
+end procCompanyReview;
+
+```
+#### 결과 조회
+![image](https://github.com/0hsoyeop/Neulbom/assets/131536077/cd03a303-f0d4-49f7-a736-26cfb3a2129b)
 
