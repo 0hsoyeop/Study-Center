@@ -144,7 +144,7 @@ from tblStudent stdn
 
 ```
 #### 취업히스토리 조회
-![취업결과조회](https://github.com/0hsoyeop/Neulbom/assets/131536077/09920069-9754-4195-8dab-4bed0f5b9287)
+![image](https://github.com/0hsoyeop/Neulbom/assets/131536077/7dac04ea-7ab5-48e1-962d-009918a7cb27)
 
 ### 기업별 리뷰 통계 조회하는 프로시저
 ```sql
