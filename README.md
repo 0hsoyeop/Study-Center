@@ -67,6 +67,12 @@
 
 ---
 ### 구현기능
+- 취업 히스토리 테이블 (tblJobHistroy)에 데이터 추가하는 프로시저
+```sql
+-- procInsertJobHistory
+exec procInsertJobHistory(<교육생seq>, '<직무>', ‘<기업명>', '<기업규모>', '<지원후기>', '<합격불합격>', '<지원날짜>');
+```
+
 #### 취업 히스토리 뷰 생성
 ```sql
 create or replace view vwJobHistory
@@ -123,6 +129,6 @@ from tblStudent stdn
                                                             order by applyDate, hireDate, studentSeq, completeOrFailDate;
 
 ```
-##### 결과 조회
+#### 취업히스토리 조회
 ![취업결과조회](https://github.com/0hsoyeop/Neulbom/assets/131536077/09920069-9754-4195-8dab-4bed0f5b9287)
 
