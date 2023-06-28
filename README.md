@@ -176,3 +176,31 @@ end procCompanyReview;
 #### 결과 조회
 ![image](https://github.com/0hsoyeop/Neulbom/assets/131536077/cd03a303-f0d4-49f7-a736-26cfb3a2129b)
 
+### 교육생의 취업 결과 조회
+![image](https://github.com/0hsoyeop/Neulbom/assets/131536077/e8d23f33-73be-425c-9da3-f57956d6ba97)
+
+```sql
+create or replace view vwJobResult
+as
+select 
+    stdn.studentSeq as studentSeq,
+    substr(a.name,1,1) || lpad('*', length(a.name)-2, '*') ||
+        substr(a.name, length(a.name), 1) as name,
+    jr.hireDate as hireDate,
+    jr.job as job,
+    jr.company as company,
+    jr.companySize as companySize,
+    jr.satisfaction as satisfaction,
+    c.courseTitle as courseTitle
+from tblStudent stdn
+    inner join tbljobResult jr
+        on stdn.studentSeq = jr.studentSeq 
+            inner join tblApplicant a
+                on a.applicantSeq = stdn.applicantSeq
+                    inner join tblOpenCourse openC
+                        on stdn.openCourseSeq = openC.openCourseSeq
+                            inner join tblCourse c
+                                on openC.courseSeq = c.courseSeq
+                                    order by studentSeq, hireDate, company;
+
+```
